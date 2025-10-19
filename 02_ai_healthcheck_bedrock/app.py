@@ -10,11 +10,11 @@ from pathlib import Path
 repo_root = Path(__file__).resolve().parent.parent
 sys.path.append(str(repo_root))
 
-from ai_healthcheck_api.ai_healthcheck_api_stack import AiHealthcheckApiStack
+from ai_healthcheck_bedrock.ai_healthcheck_bedrock_stack import AiHealthcheckBedrockStack
 
 
 app = cdk.App()
-AiHealthcheckApiStack(app, "AiHealthcheckApiStack",
+AiHealthcheckBedrockStack(app, "AiHealthcheckBedrockStack",
     )
 
 app.synth()
