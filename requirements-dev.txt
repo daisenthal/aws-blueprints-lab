@@ -1,0 +1,17 @@
+# requirements-dev.txt
+# Inherit all runtime dependencies
+-r requirements.txt
+
+# --- Testing & Quality ---
+pytest            # run unit/integration tests
+pytest-cov        # coverage reports
+moto[all]         # mock AWS services for local tests
+flake8            # code linting
+black             # code formatter
+isort             # import sorting
+mypy              # static type checking
+
+# --- Developer Experience ---
+boto3-stubs       # type hints for AWS SDK
+aws-cdk-lib       # ensure CDK types visible to linters
+constructs

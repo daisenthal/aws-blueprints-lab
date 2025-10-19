@@ -1,5 +1,29 @@
-.venv/
+# Python
 __pycache__/
-cdk.out/
 *.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg/
+dist/
+
+# Virtual Envs
+.venv/
+env/
+venv/
+
+# CDK output
+cdk.out/
+cdk.context.json
+out.json
+cdk.json
+
+# IDEs
+.vscode/
+.idea/
+
+# macOS
 .DS_Store
+
+# AWS CDK assets
+assets/
