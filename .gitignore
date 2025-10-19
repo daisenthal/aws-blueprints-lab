@@ -17,6 +17,7 @@ cdk.out/
 cdk.context.json
 out.json
 cdk.json
+*.env
 
 # IDEs
 .vscode/
