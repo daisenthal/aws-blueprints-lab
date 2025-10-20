@@ -1,0 +1,48 @@
+name: Deploy CDK Blueprints
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # allow manual runs from the Actions tab
+
+permissions:
+  id-token: write      # required for OIDC federation
+  contents: read       # read repo contents
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js (for AWS CDK CLI)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install CDK and dependencies
+        run: |
+          npm install -g aws-cdk
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::946486897374:role/GitHubDeployRole
+          aws-region: us-east-1
+
+      - name: Deploy AI Healthcheck (Bedrock)
+        run: |
+          source .venv/bin/activate
+          cd 02_ai_healthcheck_bedrock
+          cdk synth
+          cdk deploy --require-approval never

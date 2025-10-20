@@ -5,7 +5,7 @@ echo "🧹 Destroying all blueprints..."
 FOLDERS=(
   "00_foundation"
   "01_ai_healthcheck_api"
-  "01_ai_bedrock_api"
+  "02_ai_healthcheck_bedrock"
 )
 
 for DIR in "${FOLDERS[@]}"; do
