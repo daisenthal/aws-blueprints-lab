@@ -1,5 +1,8 @@
 name: Deploy CDK Blueprints
 
+env:
+  DEPLOY_REGION: us-west-2
+
 on:
   push:
     branches: [ main ]
@@ -34,28 +37,21 @@ jobs:
           source .venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Debug OIDC token
-        id: debug-oidc
-        run: |
-          echo "Requesting OIDC token..."
-          TOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r '.value')
-          echo "Decoded JWT claims:"
-          echo "$TOKEN" | cut -d '.' -f2 | base64 -d 2>/dev/null | jq .
-        env:
-          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ steps.auth_token.outputs.token }}
-          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ steps.auth_token.outputs.url }}
-
-
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::946486897374:role/GitHubDeployRole
           aws-region: us-east-1
 
+      - name: Bootstrap CDK (once per region)
+        run: |
+          source .venv/bin/activate
+          cdk bootstrap aws://946486897374/$DEPLOY_REGION --region $DEPLOY_REGION --require-approval never
+
+
       - name: Deploy AI Healthcheck (Bedrock)
         run: |
           source .venv/bin/activate
           cd 02_ai_healthcheck_bedrock
           cdk synth
-          cdk deploy --require-approval never
+          cdk deploy --region $DEPLOY_REGION --require-approval never
