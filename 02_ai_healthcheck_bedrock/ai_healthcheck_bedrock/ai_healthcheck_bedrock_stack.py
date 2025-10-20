@@ -25,7 +25,7 @@ class AiHealthcheckBedrockStack(Stack):
         
         log_group = logs.LogGroup(
         self, "BedrockLogGroup",
-        log_group_name="/aws/lambda/ai-healthcheck-lambda-bedrock",
+        log_group_name="/aws/lambda/ai-healthcheck-lambda-bedrock-logs",
         retention=logs.RetentionDays.ONE_WEEK,
         removal_policy=RemovalPolicy.DESTROY,
     )
