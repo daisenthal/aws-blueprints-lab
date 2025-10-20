@@ -23,12 +23,18 @@ class AiHealthcheckBedrockStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
         )
         
+        log_group = logs.LogGroup(
+        self, "BedrockLogGroup",
+        log_group_name="/aws/lambda/ai-healthcheck-lambda-bedrock",
+        retention=logs.RetentionDays.ONE_WEEK,
+        removal_policy=RemovalPolicy.DESTROY,
+    )
+        
 
         # Lambda with Bedrock access
         fn = _lambda.Function(
             self, "AIHealthcheckLambda",
             function_name="ai-healthcheck-lambda-bedrock", 
-            log_retention=logs.RetentionDays.ONE_WEEK, # will create log group itself and manage
             runtime=_lambda.Runtime.PYTHON_3_11,
             handler="handler.handler",
             code=_lambda.Code.from_asset("lambda"),
@@ -39,6 +45,8 @@ class AiHealthcheckBedrockStack(Stack):
                 "USE_MOCK_BEDROCK": "false",
             },
         )
+        
+        fn.node.add_dependency(log_group)  # ensure log group exists first
 
         # Permissions
         table.grant_write_data(fn)
