@@ -24,7 +24,12 @@ class AiHealthcheckBedrockStack(Stack):
         )
         
       
-        
+        log_group = logs.LogGroup(
+            self, "HealthcheckLogGroup",
+            log_group_name="/aws/lambda/ai-healthcheck-lambda-bedrock",
+            retention=logs.RetentionDays.ONE_WEEK,
+            removal_policy=RemovalPolicy.DESTROY,
+        )
 
         # Lambda with Bedrock access
         fn = _lambda.Function(
@@ -39,7 +44,7 @@ class AiHealthcheckBedrockStack(Stack):
                 "REGION": "us-east-1",
                 "USE_MOCK_BEDROCK": "false",
             },
-            log_retention=logs.RetentionDays.ONE_WEEK,
+            log_group=log_group,
             
         )
         
