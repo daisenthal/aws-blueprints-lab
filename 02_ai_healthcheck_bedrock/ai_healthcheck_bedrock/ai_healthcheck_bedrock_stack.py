@@ -5,9 +5,11 @@ from aws_cdk import (
     aws_apigateway as apigw,
     aws_dynamodb as dynamodb,
     aws_iam as iam,
+    aws_logs as logs,
 )
 from constructs import Construct
 from utils.outputs import standard_outputs
+
 
 class AiHealthcheckBedrockStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs):
@@ -20,11 +22,13 @@ class AiHealthcheckBedrockStack(Stack):
             partition_key={"name": "id", "type": dynamodb.AttributeType.STRING},
             removal_policy=RemovalPolicy.DESTROY,
         )
+        
 
         # Lambda with Bedrock access
         fn = _lambda.Function(
             self, "AIHealthcheckLambda",
-            function_name="ai-healthcheck-lambda-bedrock",
+            function_name="ai-healthcheck-lambda-bedrock", 
+            log_retention=logs.RetentionDays.ONE_WEEK, # will create log group itself and manage
             runtime=_lambda.Runtime.PYTHON_3_11,
             handler="handler.handler",
             code=_lambda.Code.from_asset("lambda"),
