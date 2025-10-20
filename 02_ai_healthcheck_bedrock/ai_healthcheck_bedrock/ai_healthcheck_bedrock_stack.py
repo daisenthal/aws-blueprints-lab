@@ -23,12 +23,7 @@ class AiHealthcheckBedrockStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
         )
         
-        log_group = logs.LogGroup(
-        self, "BedrockLogGroup",
-        log_group_name="/aws/lambda/ai-healthcheck-lambda-bedrock-logs",
-        retention=logs.RetentionDays.ONE_WEEK,
-        removal_policy=RemovalPolicy.DESTROY,
-    )
+      
         
 
         # Lambda with Bedrock access
@@ -44,9 +39,11 @@ class AiHealthcheckBedrockStack(Stack):
                 "REGION": "us-east-1",
                 "USE_MOCK_BEDROCK": "false",
             },
+            log_retention=logs.RetentionDays.ONE_WEEK,
+            
         )
         
-        fn.node.add_dependency(log_group)  # ensure log group exists first
+       
 
         # Permissions
         table.grant_write_data(fn)
