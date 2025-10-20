@@ -14,7 +14,7 @@ from ai_healthcheck_bedrock.ai_healthcheck_bedrock_stack import AiHealthcheckBed
 
 
 app = cdk.App()
-AiHealthcheckBedrockStack(app, "AiHealthcheckBedrockStack",
+AiHealthcheckBedrockStack(app, "AiBedrockStack",
     )
 
 app.synth()
