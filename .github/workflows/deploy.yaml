@@ -1,7 +1,7 @@
 name: Deploy CDK Blueprints
 
 env:
-  DEPLOY_REGION: us-west-2
+  DEPLOY_REGION: us-east-1
 
 on:
   push:
