@@ -5,17 +5,18 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - npm install -g aws-cdk
-      - python -m venv .venv
-      - .venv/bin/pip install -r requirements.txt
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
 
   build:
     commands:
       - echo "Synthesizing CDK app..."
-       - .venv/bin/cdk synth
-      - echo "Deploying AI Healthcheck stack..."
       - cd 02_ai_healthcheck_bedrock
-      - .venv/bin/cdk deploy --require-approval never
+      - cdk synth
+      - echo "Deploying AI Healthcheck stack..."
+      - cdk deploy --require-approval never
 
 artifacts:
   files:
     - "**/*"
+
