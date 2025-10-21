@@ -17,8 +17,8 @@ class BedrockContainerStack(Stack):
 
         # DynamoDB table
         table = dynamodb.Table(
-            self, "AIHealthcheckResults",
-            table_name="AIHealthcheckResults",
+            self, "BedrockContainerResults",
+            table_name="BedrockContainerResults",
             partition_key={"name": "id", "type": dynamodb.AttributeType.STRING},
             removal_policy=RemovalPolicy.DESTROY,
         )
@@ -26,7 +26,7 @@ class BedrockContainerStack(Stack):
       
         log_group = logs.LogGroup(
             self, "HealthcheckLogGroup",
-            log_group_name="/aws/lambda/ai-healthcheck-lambda-bedrock",
+            log_group_name="/aws/lambda/bedrock-container",
             retention=logs.RetentionDays.ONE_WEEK,
             removal_policy=RemovalPolicy.DESTROY,
         )
@@ -37,7 +37,9 @@ class BedrockContainerStack(Stack):
             function_name="bedrock-container", 
             runtime=_lambda.Runtime.PYTHON_3_11,
             handler="handler.handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.DockerImageCode.from_image_asset("03_bedrock_container/lambda"),
+            memory_size=1024,
+            timeout=60,
             environment={
                 "RESULTS_TABLE": table.table_name,
                 "MODEL_ID": "amazon.titan-text-lite-v1",
@@ -47,6 +49,8 @@ class BedrockContainerStack(Stack):
             log_group=log_group,
             
         )
+        
+    
         
        
 
