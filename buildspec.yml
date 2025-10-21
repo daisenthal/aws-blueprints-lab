@@ -6,8 +6,7 @@ phases:
       - echo "Installing dependencies..."
       - npm install -g aws-cdk
       - python -m venv .venv
-      - source .venv/bin/activate
-      - pip install -r requirements.txt
+      - .venv/bin/pip install -r requirements.txt
 
   build:
     commands:

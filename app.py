@@ -10,7 +10,7 @@ BlueprintPipelineStack(
     app,
     "BlueprintPipelineStack",
     repo_owner="daisenthal",
-    repo_name="aws-blueprints",
+    repo_name="aws-blueprints-lab",
     branch="main",
 )
 
