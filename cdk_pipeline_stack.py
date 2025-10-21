@@ -49,14 +49,26 @@ class BlueprintPipelineStack(Stack):
         build_project.add_to_role_policy(
             iam.PolicyStatement(
                 actions=[
+                    # Core CDK + CloudFormation
                     "sts:AssumeRole",
+                    "iam:*",
                     "cloudformation:*",
                     "s3:*",
                     "lambda:*",
+                    "logs:*",
+                    "events:*",
                     "apigateway:*",
                     "dynamodb:*",
                     "bedrock:*",
-                    "ssm:GetParameter" ,
+                    "ec2:*",
+                    "ssm:*",
+                    "kms:*",
+                    "secretsmanager:*",
+                    "ecr:*",
+                    "codebuild:*",
+                    "codepipeline:*",
+                    "codedeploy:*",
+                    "cloudwatch:*",
                 ],
                 resources=["*"],
             )
