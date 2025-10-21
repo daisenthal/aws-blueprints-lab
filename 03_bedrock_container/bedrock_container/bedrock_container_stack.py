@@ -35,7 +35,7 @@ class BedrockContainerStack(Stack):
         fn = _lambda.DockerImageFunction(
             self, "BedrockContainerLambda",
             function_name="bedrock-container",
-            code=_lambda.DockerImageCode.from_image_asset("03_bedrock_container/lambda"),
+            code=_lambda.DockerImageCode.from_image_asset("lambda"),
             memory_size=1024,
             timeout=Duration.seconds(60),
             environment={
