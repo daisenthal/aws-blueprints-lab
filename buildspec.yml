@@ -11,9 +11,9 @@ phases:
   build:
     commands:
       - echo "Synthesizing CDK app..."
-      - cd 02_ai_healthcheck_bedrock
+      - cd 03_bedrock_container
       - cdk synth
-      - echo "Deploying AI Healthcheck stack..."
+      - echo "Deploying Bedrock Container stack..."
       - cdk deploy --require-approval never
 
 artifacts:
