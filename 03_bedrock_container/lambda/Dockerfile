@@ -1,7 +1,5 @@
 FROM public.ecr.aws/lambda/python:3.11
 
-# Install build tools
-RUN yum install -y gcc g++ make
 
 # Copy and install dependencies
 COPY requirements.txt .
