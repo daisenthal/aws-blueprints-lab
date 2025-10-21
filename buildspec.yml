@@ -11,10 +11,10 @@ phases:
   build:
     commands:
       - echo "Synthesizing CDK app..."
-      - cdk synth
+       - .venv/bin/cdk synth
       - echo "Deploying AI Healthcheck stack..."
       - cd 02_ai_healthcheck_bedrock
-      - cdk deploy --require-approval never
+      - .venv/bin/cdk deploy --require-approval never
 
 artifacts:
   files:
