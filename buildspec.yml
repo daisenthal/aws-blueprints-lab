@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-        python: 3.11
+        python: 3.12
         nodejs: 20
     commands:
       - echo "Installing dependencies..."
@@ -14,9 +14,9 @@ phases:
   build:
     commands:
       - echo "Synthesizing CDK app..."
-      - cd 03_bedrock_container
+      - cd 05_agent
       - cdk synth
-      - echo "Deploying Bedrock Container stack..."
+      - echo "Deploying Agent stack..."
       - cdk deploy --require-approval never
 
 artifacts:

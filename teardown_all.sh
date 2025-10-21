@@ -6,6 +6,8 @@ FOLDERS=(
   "00_foundation"
   "01_ai_healthcheck_api"
   "02_ai_healthcheck_bedrock"
+  "03_bedrock_container"
+  "05_agent"
 )
 
 for DIR in "${FOLDERS[@]}"; do
