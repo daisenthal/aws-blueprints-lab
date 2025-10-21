@@ -1,6 +1,7 @@
 from aws_cdk import (
     Stack,
     RemovalPolicy,
+    Duration,
     aws_lambda as _lambda,
     aws_apigateway as apigw,
     aws_dynamodb as dynamodb,
@@ -32,14 +33,14 @@ class BedrockContainerStack(Stack):
         )
 
         # Lambda with Bedrock access
-        fn = _lambda.Function(
+        fn = _lambda.DockerImageFunction(
             self, "BedrockContainerLambda",
             function_name="bedrock-container", 
             runtime=_lambda.Runtime.PYTHON_3_11,
             handler="handler.handler",
             code=_lambda.DockerImageCode.from_image_asset("03_bedrock_container/lambda"),
             memory_size=1024,
-            timeout=60,
+            timeout=Duration.seconds(60),
             environment={
                 "RESULTS_TABLE": table.table_name,
                 "MODEL_ID": "amazon.titan-text-lite-v1",
