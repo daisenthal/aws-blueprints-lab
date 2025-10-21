@@ -56,6 +56,7 @@ class BlueprintPipelineStack(Stack):
                     "apigateway:*",
                     "dynamodb:*",
                     "bedrock:*",
+                    "ssm:GetParameter" ,
                 ],
                 resources=["*"],
             )
