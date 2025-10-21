@@ -24,7 +24,7 @@ class AgentSkeletonStack(Stack):
             function_name="GetMetricsFn",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="get_metrics.handler",
-            code=_lambda.Code.from_asset("lambda/get_metrics")
+            code=_lambda.Code.from_asset("lambda")
         )
 
         summarize = _lambda.Function(
@@ -32,7 +32,7 @@ class AgentSkeletonStack(Stack):
             function_name="SummarizeFn",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="summarize.handler",
-            code=_lambda.Code.from_asset("lambda/summarize")
+            code=_lambda.Code.from_asset("lambda")
         )
 
         # --- Agent Router Lambda ---
@@ -41,7 +41,7 @@ class AgentSkeletonStack(Stack):
             function_name="AgentRouterFn",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="router.handler",
-            code=_lambda.Code.from_asset("lambda/router"),
+            code=_lambda.Code.from_asset("lambda"),
             environment={
                 "TABLE_NAME": table.table_name,
                 "BEDROCK_MODEL_ID": "anthropic.claude-3-sonnet-20240229-v1:0",
