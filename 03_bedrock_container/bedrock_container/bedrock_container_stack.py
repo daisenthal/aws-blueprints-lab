@@ -32,12 +32,9 @@ class BedrockContainerStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
         )
 
-        # Lambda with Bedrock access
         fn = _lambda.DockerImageFunction(
             self, "BedrockContainerLambda",
-            function_name="bedrock-container", 
-            runtime=_lambda.Runtime.PYTHON_3_11,
-            handler="handler.handler",
+            function_name="bedrock-container",
             code=_lambda.DockerImageCode.from_image_asset("03_bedrock_container/lambda"),
             memory_size=1024,
             timeout=Duration.seconds(60),
@@ -48,9 +45,8 @@ class BedrockContainerStack(Stack):
                 "USE_MOCK_BEDROCK": "false",
             },
             log_group=log_group,
-            
         )
-        
+            
     
         
        
