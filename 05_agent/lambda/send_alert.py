@@ -6,18 +6,14 @@ logger.setLevel(logging.INFO)
 
 def handler(event, context):
     """
-    Returns sample customer health metrics.
+    Sends an alert (mocked for now).
     Expected input: {"customer_id": "123"}
     """
     logger.info(f"Received event: {json.dumps(event)}")
 
     customer_id = event.get("customer_id", "unknown")
-    result = {
-        "customer_id": customer_id,
-        "uptime": 90.8,
-        "tickets": 2,
-        "nps": 87
-    }
+    message = f"🚨 Alert triggered for customer {customer_id} due to health risk."
+    logger.info(message)
 
-    logger.info(f"Returning result: {result}")
-    return result
+    # Here you could integrate SNS, Slack, or EventBridge
+    return {"status": "alert_sent", "message": message}

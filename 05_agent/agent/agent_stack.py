@@ -1,3 +1,5 @@
+import json
+
 from aws_cdk import (
     Stack, Duration, RemovalPolicy,
     aws_lambda as _lambda,
@@ -34,22 +36,38 @@ class AgentSkeletonStack(Stack):
             handler="summarize.handler",
             code=_lambda.Code.from_asset("lambda")
         )
+        
+        send_alert = _lambda.Function(
+            self, "SendAlertFn",
+            function_name="SendAlertFn",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="send_alert.handler",
+            code=_lambda.Code.from_asset("lambda")
+        )
 
-        # --- Agent Router Lambda ---
+       # --- Agent Router Lambda ---
         router = _lambda.Function(
             self, "AgentRouterFn",
-            function_name="AgentRouterFn",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="router.handler",
             code=_lambda.Code.from_asset("lambda"),
             environment={
                 "TABLE_NAME": table.table_name,
                 "BEDROCK_MODEL_ID": "anthropic.claude-3-sonnet-20240229-v1:0",
-                "TOOLS": '{"get_customer_metrics":"<lambda_arn1>", "summarize_metrics":"<lambda_arn2>"}'
+                "TOOLS": json.dumps({
+                    "get_customer_metrics": get_metrics.function_arn,
+                    "summarize_metrics": summarize.function_arn,
+                    "send_alert": send_alert.function_arn
+                })
             },
             timeout=Duration.seconds(30)
         )
         table.grant_read_write_data(router)
+        
+        get_metrics.grant_invoke(router)
+        summarize.grant_invoke(router)
+        send_alert.grant_invoke(router)
+        
 
         # Bedrock invoke permission
         router.add_to_role_policy(iam.PolicyStatement(
